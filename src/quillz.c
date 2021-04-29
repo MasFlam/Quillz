@@ -7,6 +7,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <wren.h>
 
@@ -20,6 +21,7 @@ struct {
 	WrenHandle *sketch, *sketchclass;
 	char *sketchfile, *sketchsrc;
 	GLFWwindow *win;
+	int winw, winh;
 } g = {0};
 
 #include "quillz.wren.inc"
@@ -31,6 +33,7 @@ static int init_gl();
 static char *load_file(const char *path, size_t *RESTRICT size_out);
 static void parse_args(int argc, char **argv);
 static void run();
+static void window_resize_callback(GLFWwindow *win, int w, int h);
 static void quillzError(WrenVM *vm, WrenErrorType type, const char *module, int line, const char *message);
 static WrenLoadModuleResult quillzLoadModule(WrenVM *vm, const char *name);
 static void quillzWrite(WrenVM *vm, const char *text);
@@ -144,13 +147,15 @@ init_gl()
 {
 	if (!glfwInit()) return -1;
 	
-	g.win = glfwCreateWindow(400, 400, "Quillz sketch", NULL, NULL);
+	g.win = glfwCreateWindow(g.winw = 400, g.winh = 400, "Quillz sketch", NULL, NULL);
 	if (!g.win) {
 		glfwTerminate();
 		return -2;
 	}
 	
 	glfwMakeContextCurrent(g.win);
+	
+	glfwSetWindowSizeCallback(g.win, window_resize_callback);
 	
 	return 0;
 }
@@ -228,6 +233,14 @@ run()
 	wrenReleaseHandle(g.vm, handle);
 	
 	cleanup_gl();
+}
+
+void
+window_resize_callback(GLFWwindow *win, int w, int h)
+{
+	glViewport(0, 0, w, h);
+	g.winw = w;
+	g.winh = h;
 }
 
 void

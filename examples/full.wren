@@ -1,4 +1,4 @@
-import "quillz" for Sketch
+import "quillz" for GL, Sketch
 import "random" for Random
 
 #!sketch
@@ -11,6 +11,7 @@ class Main is Sketch {
 	
 	setup() {
 		System.print("setup() called")
+		size(640, 480)
 	}
 	
 	draw() {
@@ -21,6 +22,12 @@ class Main is Sketch {
 		var b = _rng.float(0, 256)
 		System.print("New background: %(r),%(g),%(b),255")
 		background(r, g, b, 255)
+		begin(GL.POLYGON)
+		vertex(width/4, height/4)
+		vertex(3*width/4, height/4)
+		vertex(3*width/4, 3*height/4)
+		vertex(width/4, 3*height/4)
+		end()
 		_cnt = _cnt + 1
 	}
 }
