@@ -1,10 +1,10 @@
-#include <GL/gl.h>
 #define _POSIX_C_SOURCE 200809L
 #include <errno.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <wren.h>
 

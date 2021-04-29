@@ -18,7 +18,7 @@
 struct {
 	WrenVM *vm;
 	WrenHandle *sketch, *sketchclass;
-	char *sketchfile, *sketchsrc, *sketch_classname;
+	char *sketchfile, *sketchsrc;
 	GLFWwindow *win;
 } g = {0};
 
@@ -132,23 +132,12 @@ init()
 	if (!wrenGetSlotBool(g.vm, 0)) Fatal("Sketch class doesn't inherit from `Sketch`.");
 	wrenReleaseHandle(g.vm, handle);
 	
-	int k = strlen(g.sketch_classname);
-	char *code = malloc(sizeof("import \"sketch\" for ") + k);
-	strcpy(code, "import \"sketch\" for ");
-	strcpy(code + sizeof("import \"sketch\" for ")-1, g.sketch_classname);
-	wrenInterpret(g.vm, "quillz:init", code);
-	free(code);
-	
-	code = malloc(sizeof("var sketchobj = ")-1 + k + sizeof(".preinit()"));
-	strcpy(code, "var sketchobj = ");
-	strcpy(code + sizeof("var sketchobj = ")-1, g.sketch_classname);
-	strcpy(code + sizeof("var sketchobj = ")-1 + k,".preinit()");
-	wrenInterpret(g.vm, "quillz:init", code);
-	free(code);
-	
 	wrenEnsureSlots(g.vm, 1);
-	wrenGetVariable(g.vm, "quillz:init", "sketchobj", 0);
+	handle = wrenMakeCallHandle(g.vm, "preinit()");
+	wrenSetSlotHandle(g.vm, 0, g.sketchclass);
+	if (wrenCall(g.vm, handle) != WREN_RESULT_SUCCESS) Fatal("Error calling `preinit()` constructor.");
 	g.sketch = wrenGetSlotHandle(g.vm, 0);
+	wrenReleaseHandle(g.vm, handle);
 }
 
 int
