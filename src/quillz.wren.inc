@@ -20,6 +20,8 @@ const char *quillz_module_src =
 "		}\n"
 "		return background_(r/255, g/255, b/255, a/255)\n"
 "	}\n"
+"	background(r, g, b) { background(r, g, b, 255) }\n"
+"	background(lightness) { background(lightness, lightness, lightness, 255) }\n"
 "	\n"
 "	foreign size_(width, height)\n"
 "	size(width, height) {\n"

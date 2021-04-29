@@ -90,9 +90,10 @@ init()
 	for (int i = 0; i < nvars; ++i) {
 		wrenSetSlotHandle(g.vm, 0, list_handle);
 		wrenGetListElement(g.vm, 0, i, 0);
-		g.sketch_classname = strdup(wrenGetSlotString(g.vm, 0));
-		printf("modvar: %s\n", g.sketch_classname);
-		wrenGetVariable(g.vm, "sketch", g.sketch_classname, 0);
+		char *s = strdup(wrenGetSlotString(g.vm, 0));
+		printf("modvar: %s\n", s);
+		wrenGetVariable(g.vm, "sketch", s, 0);
+		free(s);
 		handle = wrenGetSlotHandle(g.vm, 0);
 		if (wrenGetSlotType(g.vm, 0) == WREN_TYPE_UNKNOWN) {
 			printf("modvar type unknown\n");
@@ -114,10 +115,8 @@ init()
 				}
 			}
 		}
-		free(g.sketch_classname);
 		wrenReleaseHandle(g.vm, handle);
 		handle = NULL;
-		g.sketch_classname = NULL;
 	}
 	wrenReleaseHandle(g.vm, list_handle);
 	wrenReleaseHandle(g.vm, attributes_handle);
@@ -223,7 +222,6 @@ run()
 		wrenSetSlotHandle(g.vm, 0, g.sketch);
 		wrenCall(g.vm, handle);
 		
-		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(g.win);
 		glfwPollEvents();
 	}

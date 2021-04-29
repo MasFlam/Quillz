@@ -19,6 +19,8 @@ class Sketch {
 		}
 		return background_(r/255, g/255, b/255, a/255)
 	}
+	background(r, g, b) { background(r, g, b, 255) }
+	background(lightness) { background(lightness, lightness, lightness, 255) }
 	
 	foreign size_(width, height)
 	size(width, height) {

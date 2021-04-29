@@ -43,6 +43,8 @@ quillz_background(WrenVM *vm)
 	float b = wrenGetSlotDouble(vm, 3);
 	float a = wrenGetSlotDouble(vm, 4);
 	glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT);
+	wrenSetSlotNull(vm, 0);
 }
 
 void
