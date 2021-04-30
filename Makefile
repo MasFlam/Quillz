@@ -1,4 +1,4 @@
-CFLAGS := -Iinclude/ -std=c99 -Wall -Wextra -pedantic
+CFLAGS := -Iinclude/ -std=c99 -Wall -Wextra -pedantic -Wno-unused-parameter
 LDFLAGS := -lGL -lglfw -lm
 
 .PHONY: all clean clean-all compile help wren-clean
