@@ -238,6 +238,8 @@ run()
 void
 window_resize_callback(GLFWwindow *win, int w, int h)
 {
+	// This is iffy because screen coordinates != pixels, but for the `Sketch#size()`
+	// function's sake Quillz assumes that is the case across the board.
 	glViewport(0, 0, w, h);
 	g.winw = w;
 	g.winh = h;

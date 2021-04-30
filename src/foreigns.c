@@ -12,12 +12,19 @@ static WrenForeignMethodFn quillzBindForeignMethod(WrenVM* vm, const char* modul
 static void quillz_background(WrenVM *vm);
 static void quillz_begin(WrenVM *vm);
 static void quillz_end(WrenVM *vm);
+static void quillz_day(WrenVM *vm);
 static void quillz_height(WrenVM *vm);
+static void quillz_hour(WrenVM *vm);
+static void quillz_minute(WrenVM *vm);
+static void quillz_month(WrenVM *vm);
+static void quillz_second(WrenVM *vm);
 static void quillz_size(WrenVM *vm);
 static void quillz_sleep(WrenVM *vm);
 static void quillz_title(WrenVM *vm);
 static void quillz_vertex(WrenVM *vm);
 static void quillz_width(WrenVM *vm);
+static void quillz_weekDay(WrenVM *vm);
+static void quillz_year(WrenVM *vm);
 
 
 WrenForeignMethodFn
@@ -31,8 +38,18 @@ quillzBindForeignMethod(WrenVM* vm, const char* module, const char* clazz, bool 
 			return quillz_begin;
 		} else if (!strcmp(sign, "end()")) {
 			return quillz_end;
+		} else if (!strcmp(sign, "day()")) {
+			return quillz_day;
 		} else if (!strcmp(sign, "height")) {
 			return quillz_height;
+		} else if (!strcmp(sign, "hour()")) {
+			return quillz_hour;
+		} else if (!strcmp(sign, "minute()")) {
+			return quillz_minute;
+		} else if (!strcmp(sign, "month()")) {
+			return quillz_month;
+		} else if (!strcmp(sign, "second()")) {
+			return quillz_second;
 		} else if (!strcmp(sign, "size_(_,_)")) {
 			return quillz_size;
 		} else if(!strcmp(sign, "sleep_(_)")) {
@@ -43,6 +60,10 @@ quillzBindForeignMethod(WrenVM* vm, const char* module, const char* clazz, bool 
 			return quillz_vertex;
 		} else if (!strcmp(sign, "width")) {
 			return quillz_width;
+		} else if (!strcmp(sign, "weekDay()")) {
+			return quillz_weekDay;
+		} else if (!strcmp(sign, "year()")) {
+			return quillz_year;
 		}
 	}
 	// should be unreachable
@@ -78,9 +99,49 @@ quillz_end(WrenVM *vm)
 }
 
 void
+quillz_day(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_mday);
+}
+
+void
 quillz_height(WrenVM *vm)
 {
 	wrenSetSlotDouble(vm, 0, g.winh);
+}
+
+void
+quillz_hour(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_hour);
+}
+
+void
+quillz_minute(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_min);
+}
+
+void
+quillz_month(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_mon+1);
+}
+
+void
+quillz_second(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_sec);
 }
 
 void
@@ -137,4 +198,22 @@ void
 quillz_width(WrenVM *vm)
 {
 	wrenSetSlotDouble(vm, 0, g.winw);
+}
+
+void
+quillz_weekDay(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	// Americans weird with their datetimes again *sigh*
+	// 👏 The 👏 week 👏 starts 👏 with 👏 Monday 👏
+	wrenSetSlotDouble(vm, 0, (tm->tm_wday + 6)%7 + 1);
+}
+
+void
+quillz_year(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_year+1900);
 }

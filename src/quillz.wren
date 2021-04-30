@@ -41,9 +41,19 @@ class Sketch {
 		return begin_(mode)
 	}
 	
+	foreign day()
+	
 	foreign end()
 	
 	foreign height
+	
+	foreign hour()
+	
+	foreign minute()
+	
+	foreign month()
+	
+	foreign second()
 	
 	foreign size_(width, height)
 	size(width, height) {
@@ -84,4 +94,8 @@ class Sketch {
 	vertex(x, y) { vertex(x, y, 0) }
 	
 	foreign width
+	
+	foreign weekDay()
+	
+	foreign year()
 }

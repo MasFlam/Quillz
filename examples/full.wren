@@ -16,7 +16,7 @@ class Main is Sketch {
 	
 	draw() {
 		sleep(2)
-		title("Quillz sketch, counter is %(_cnt)")
+		title("Frame #%(_cnt) | %(year())-%(month())-%(day()) %(hour()):%(minute()):%(second()), weekday=%(weekDay())")
 		var r = _rng.float(0, 256)
 		var g = _rng.float(0, 256)
 		var b = _rng.float(0, 256)
