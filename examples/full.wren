@@ -17,9 +17,9 @@ class Main is Sketch {
 	draw() {
 		sleep(2)
 		title("Frame #%(_cnt) | %(year())-%(month())-%(day()) %(hour()):%(minute()):%(second()), weekday=%(weekDay())")
-		var r = _rng.float(0, 256)
-		var g = _rng.float(0, 256)
-		var b = _rng.float(0, 256)
+		var r = _rng.float(0, 255)
+		var g = _rng.float(0, 255)
+		var b = _rng.float(0, 255)
 		System.print("New background: %(r),%(g),%(b),255")
 		background(r, g, b, 255)
 		begin(GL.POLYGON)
