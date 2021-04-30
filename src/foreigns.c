@@ -11,8 +11,9 @@
 static WrenForeignMethodFn quillzBindForeignMethod(WrenVM* vm, const char* module, const char* clazz, bool is_static, const char* signature);
 static void quillz_background(WrenVM *vm);
 static void quillz_begin(WrenVM *vm);
-static void quillz_end(WrenVM *vm);
 static void quillz_day(WrenVM *vm);
+static void quillz_end(WrenVM *vm);
+static void quillz_frameCount(WrenVM *vm);
 static void quillz_height(WrenVM *vm);
 static void quillz_hour(WrenVM *vm);
 static void quillz_minute(WrenVM *vm);
@@ -36,10 +37,12 @@ quillzBindForeignMethod(WrenVM* vm, const char* module, const char* clazz, bool 
 			return quillz_background;
 		} else if (!strcmp(sign, "begin_(_)")) {
 			return quillz_begin;
-		} else if (!strcmp(sign, "end()")) {
-			return quillz_end;
 		} else if (!strcmp(sign, "day()")) {
 			return quillz_day;
+		} else if (!strcmp(sign, "end()")) {
+			return quillz_end;
+		} else if (!strcmp(sign, "frameCount")) {
+			return quillz_frameCount;
 		} else if (!strcmp(sign, "height")) {
 			return quillz_height;
 		} else if (!strcmp(sign, "hour()")) {
@@ -92,6 +95,14 @@ quillz_begin(WrenVM *vm)
 }
 
 void
+quillz_day(WrenVM *vm)
+{
+	time_t now = time(NULL);
+	struct tm *tm = localtime(&now);
+	wrenSetSlotDouble(vm, 0, tm->tm_mday);
+}
+
+void
 quillz_end(WrenVM *vm)
 {
 	glEnd();
@@ -99,11 +110,9 @@ quillz_end(WrenVM *vm)
 }
 
 void
-quillz_day(WrenVM *vm)
+quillz_frameCount(WrenVM *vm)
 {
-	time_t now = time(NULL);
-	struct tm *tm = localtime(&now);
-	wrenSetSlotDouble(vm, 0, tm->tm_mday);
+	wrenSetSlotDouble(vm, 0, g.framecnt);
 }
 
 void

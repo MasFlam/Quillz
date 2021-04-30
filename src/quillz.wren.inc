@@ -46,6 +46,8 @@ const char *quillz_module_src =
 "	\n"
 "	foreign end()\n"
 "	\n"
+"	foreign frameCount\n"
+"	\n"
 "	foreign height\n"
 "	\n"
 "	foreign hour()\n"

@@ -5,7 +5,6 @@ import "random" for Random
 class Main is Sketch {
 	construct preinit() {
 		System.print("Initializing counter to 1")
-		_cnt = 1
 		_rng = Random.new()
 	}
 	
@@ -16,7 +15,7 @@ class Main is Sketch {
 	
 	draw() {
 		sleep(2)
-		title("Frame #%(_cnt) | %(year())-%(month())-%(day()) %(hour()):%(minute()):%(second()), weekday=%(weekDay())")
+		title("Frame #%(frameCount) | %(year())-%(month())-%(day()) %(hour()):%(minute()):%(second()), weekday=%(weekDay())")
 		var r = _rng.float(0, 255)
 		var g = _rng.float(0, 255)
 		var b = _rng.float(0, 255)
@@ -28,6 +27,5 @@ class Main is Sketch {
 		vertex(3*width/4, 3*height/4)
 		vertex(width/4, 3*height/4)
 		end()
-		_cnt = _cnt + 1
 	}
 }

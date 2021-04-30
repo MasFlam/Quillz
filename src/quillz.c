@@ -22,6 +22,7 @@ struct {
 	char *sketchfile, *sketchsrc;
 	GLFWwindow *win;
 	int winw, winh;
+	uint64_t framecnt;
 } g = {0};
 
 #include "quillz.wren.inc"
@@ -140,6 +141,8 @@ init()
 	if (wrenCall(g.vm, handle) != WREN_RESULT_SUCCESS) Fatal("Error calling `preinit()` constructor.");
 	g.sketch = wrenGetSlotHandle(g.vm, 0);
 	wrenReleaseHandle(g.vm, handle);
+	
+	g.framecnt = 0;
 }
 
 int
@@ -229,6 +232,7 @@ run()
 		
 		glfwSwapBuffers(g.win);
 		glfwPollEvents();
+		++g.framecnt;
 	}
 	wrenReleaseHandle(g.vm, handle);
 	

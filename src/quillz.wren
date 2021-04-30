@@ -45,6 +45,8 @@ class Sketch {
 	
 	foreign end()
 	
+	foreign frameCount
+	
 	foreign height
 	
 	foreign hour()
